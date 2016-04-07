@@ -4,7 +4,7 @@ The lineup project is a "solver" based program meant for use in a Pairing Kata.
 
 #Setup
 
-You are the coach of the Seattle Monsters, a local beer league softball team. You have 16 players on your team and you have to set line ups for each game in your schedule. You've evaluated each of your players, and have assigned them a rank per position (1 is that player's worst position, 10 is that player's best.) For sake of this exersize, you can assume that a player who is ranked the same as another are equivalently skilled.  A 10 is a 10.
+You are the coach of the Seattle Monsters, a local beer league softball team. You have 16 players on your team and you have to set line ups for each game in your schedule. You've evaluated each of your players, and have assigned them a rank per position (1 is that player's worst position, 10 is that player's best.) For sake of this thing, you can assume that a player who is ranked the same as another are equivalently skilled.  A 10 is a 10.
 
 You have a 15 game schedule, which players have varying availability for. All players have told you ahead of time whether or not they are available to play in each game.
 
