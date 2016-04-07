@@ -60,5 +60,24 @@ namespace Tests
             Assert.That(fieldedPositions.Count, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void AllFieldPositionsAreVAlid()
+        {
+            // Arrange
+
+            // Act
+            var inning = Solver.SolveInning();
+            var fieldedPositions = inning
+                .FieldPositions
+                .Where(x => x.Position.HasValue)
+                .Select(x => x.Position.Value)
+                .ToList()
+                ;
+
+            // Assert
+            var expected = fieldedPositions.Distinct().Count();
+            Assert.That(fieldedPositions.Count, Is.EqualTo(expected));
+        }
+
     }
 }
