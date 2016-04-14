@@ -14,7 +14,7 @@ namespace Tests
                     Position = (Position?) i
                 }).ToList();
 
-            var benched = Enumerable.Range(11, 6)
+            var benched = Enumerable.Range(0, 6)
                 .Select(i => new PlayerAssignment
                 {}).ToList();
 
