@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Algorithms;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
@@ -29,13 +30,13 @@ namespace Tests
         }
 
         [Test]
-        public void ProduceAnInnerThatHas16Players()
+        public void ProduceAnInningThatHas16Players()
         {
             // Arrange
 
             // Act
             var inning = Solver.SolveInning();
-            var fieldPositions = inning.FieldPositions;
+            var fieldPositions = inning.PlayerAssignments;
 
             //Assert
             Assert.That(fieldPositions.Count, Is.EqualTo(16));
@@ -49,7 +50,7 @@ namespace Tests
             // Act
             var inning = Solver.SolveInning();
             var fieldedPositions = inning
-                .FieldPositions
+                .PlayerAssignments
                 .Where(x => x.Position.HasValue)
                 .Select(x => x.Position.Value)
                 .ToList()
@@ -61,22 +62,25 @@ namespace Tests
         }
 
         [Test]
-        public void AllFieldPositionsAreVAlid()
+        public void AllPositionsAreFielded()
         {
             // Arrange
+            var expected = Enum.GetValues(typeof (Position))
+                                .Cast<Position>()
+                                .ToList();
 
             // Act
             var inning = Solver.SolveInning();
+            
             var fieldedPositions = inning
-                .FieldPositions
+                .PlayerAssignments
                 .Where(x => x.Position.HasValue)
                 .Select(x => x.Position.Value)
                 .ToList()
                 ;
 
             // Assert
-            var expected = fieldedPositions.Distinct().Count();
-            Assert.That(fieldedPositions.Count, Is.EqualTo(expected));
+            Assert.That(fieldedPositions, Is.EqualTo(expected));
         }
 
     }

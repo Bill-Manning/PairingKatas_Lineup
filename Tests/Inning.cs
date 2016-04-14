@@ -6,6 +6,6 @@ namespace Tests
 {
     public class Inning
     {
-        public List<FieldPosition> FieldPositions { get; set; }
+        public List<PlayerAssignment> PlayerAssignments { get; set; }
     }
 }

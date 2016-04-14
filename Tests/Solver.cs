@@ -8,9 +8,21 @@ namespace Tests
     {
         public Inning SolveInning()
         {
+            var fielded = Enumerable.Range(0, 10)
+                .Select(i => new PlayerAssignment
+                {
+                    Position = (Position?) i
+                }).ToList();
+
+            var benched = Enumerable.Range(11, 6)
+                .Select(i => new PlayerAssignment
+                {}).ToList();
+
+            var all = fielded.Concat(benched).ToList();
+            
             return new Inning()
             {
-                FieldPositions = Enumerable.Range(1, 16).Select(a => new FieldPosition { Position = (Position?)a}).ToList()
+                PlayerAssignments = all
             };
         }
     }
