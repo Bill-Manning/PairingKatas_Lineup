@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Algorithms;
 using NUnit.Framework;
@@ -10,6 +11,7 @@ namespace Tests
     public class SolverTests
     {
         public Solver Solver { get; set; }
+        public List<Player> AvailablePlayersList { get; set; }
 
         [SetUp]
         public void SetUp()
@@ -23,7 +25,7 @@ namespace Tests
             // Arrange
 
             // Act
-            var inning = Solver.SolveInning();
+            var inning = Solver.SolveInning(AvailablePlayersList);
 
             //Assert
             Assert.That(inning, Is.Not.Null);
@@ -35,7 +37,7 @@ namespace Tests
             // Arrange
 
             // Act
-            var inning = Solver.SolveInning();
+            var inning = Solver.SolveInning(AvailablePlayersList);
             var fieldPositions = inning.PlayerAssignments;
 
             //Assert
@@ -48,7 +50,7 @@ namespace Tests
             // Arrange
 
             // Act
-            var inning = Solver.SolveInning();
+            var inning = Solver.SolveInning(AvailablePlayersList);
             var fieldedPositions = inning
                 .PlayerAssignments
                 .Where(x => x.Position.HasValue)
@@ -68,9 +70,11 @@ namespace Tests
             var expected = Enum.GetValues(typeof (Position))
                                 .Cast<Position>()
                                 .ToList();
+            AvailablePlayersList = Enumerable.Range(1, 16).Select(a => new Player { Name = $"Player {a}" }).ToList();
+
 
             // Act
-            var inning = Solver.SolveInning();
+            var inning = Solver.SolveInning(AvailablePlayersList);
             
             var fieldedPositions = inning
                 .PlayerAssignments
@@ -83,5 +87,24 @@ namespace Tests
             Assert.That(fieldedPositions, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void PlayersPassedInAreTheOnesSelected()
+        {
+            AvailablePlayersList = Enumerable.Range(1, 16).Select(a => new Player { Name = $"Player {a}"}).ToList();
+
+            var inning = Solver.SolveInning(AvailablePlayersList);
+
+            Assert.That(inning.PlayerAssignments.Select(a => a.Player), 
+                            Is.SubsetOf(AvailablePlayersList));
+        }
+
+        [Test]
+        public void InningUnsolvableWhenGivenNoAvailablePlayers()
+        {
+            var availablePlayersList = new List<Player>();
+            var inning = Solver.SolveInning(availablePlayersList);
+
+            Assert.That(inning.Solvable, Is.False);
+        }
     }
 }
