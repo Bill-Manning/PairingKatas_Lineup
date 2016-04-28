@@ -31,9 +31,12 @@ namespace Tests
             Assert.That(inning, Is.Not.Null);
         }
 
-        [Test]
-        public void ProduceAnInningThatHas16Players()
+        [TestCase(16)]
+        [TestCase(200)]
+        [TestCase(10)]
+        public void ProduceAnInningThatHasAnAssignedPlayerForEachOnePassedIn(int playerCount)
         {
+            AvailablePlayersList = Enumerable.Range(1, playerCount).Select(a => new Player { Name = $"Player {a}", Gender = (Gender)(a%2) }).ToList();
             // Arrange
 
             // Act
@@ -41,12 +44,39 @@ namespace Tests
             var fieldPositions = inning.PlayerAssignments;
 
             //Assert
-            Assert.That(fieldPositions.Count, Is.EqualTo(16));
+            Assert.That(fieldPositions.Count, Is.EqualTo(playerCount));
+        }
+
+        [TestCase(9)]
+        [TestCase(6)]
+        public void ProduceAnInningThatIsNotSolvableWhenLessThan10PlayersAreProvided(int playerCount)
+        {
+            AvailablePlayersList = Enumerable.Range(1, playerCount).Select(a => new Player { Name = $"Player {a}" }).ToList();
+            // Arrange
+
+            // Act
+            var inning = Solver.SolveInning(AvailablePlayersList);
+            
+            //Assert
+            Assert.That(inning.Solvable, Is.False);
+        }
+
+        [TestCase(Gender.Male)]
+        [TestCase(Gender.Female)]
+        public void ProduceAnInningWhenLessThan3OfEitherGenderAreProvided(Gender g)
+        {
+            AvailablePlayersList = Enumerable.Range(1, 10).Select(a => new Player { Name = $"Player {a}", Gender = g }).ToList();
+            // Act
+            var inning = Solver.SolveInning(AvailablePlayersList);
+
+            //Assert
+            Assert.That(inning.Solvable, Is.False);
         }
 
         [Test]
         public void FieldedPositionsAreUnique()
         {
+            AvailablePlayersList = Enumerable.Range(1, 16).Select(a => new Player { Name = $"Player {a}", Gender = (Gender)(a % 2) }).ToList();
             // Arrange
 
             // Act
@@ -70,7 +100,7 @@ namespace Tests
             var expected = Enum.GetValues(typeof (Position))
                                 .Cast<Position>()
                                 .ToList();
-            AvailablePlayersList = Enumerable.Range(1, 16).Select(a => new Player { Name = $"Player {a}" }).ToList();
+            AvailablePlayersList = Enumerable.Range(1, 16).Select(a => new Player { Name = $"Player {a}", Gender = (Gender)(a % 2) }).ToList();
 
 
             // Act
@@ -90,7 +120,7 @@ namespace Tests
         [Test]
         public void PlayersPassedInAreTheOnesSelected()
         {
-            AvailablePlayersList = Enumerable.Range(1, 16).Select(a => new Player { Name = $"Player {a}"}).ToList();
+            AvailablePlayersList = Enumerable.Range(1, 16).Select(a => new Player { Name = $"Player {a}", Gender = (Gender)(a % 2) }).ToList();
 
             var inning = Solver.SolveInning(AvailablePlayersList);
 

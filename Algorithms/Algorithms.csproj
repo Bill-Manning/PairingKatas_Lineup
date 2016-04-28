@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain.cs" />
+    <Compile Include="Gender.cs" />
     <Compile Include="PlayerAssignment.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerGameAvailabilityItem.cs" />
