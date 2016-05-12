@@ -1,12 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
-using System.Text.RegularExpressions;
 using Algorithms;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using NUnit.Framework.Internal.Builders;
-using Shouldly;
 
 namespace Tests
 {
@@ -22,12 +17,22 @@ namespace Tests
 
         public bool CanBeAdjacentTo(Inning compare)
         {
-            var benchedPlayers = PlayerAssignments.Where(assigned => assigned.Position.HasValue == false);
-            var comparedBenchedPlayers = compare.PlayerAssignments.Where(assigned => assigned.Position.HasValue == false);
+            var intersection =
+                PlayerAssignments.Intersect(compare.PlayerAssignments)
+                    .Where(assigned => assigned.Position.HasValue == false);
 
-            return !benchedPlayers
-                        .Any(pa => comparedBenchedPlayers
-                                    .Any(cpa => cpa.Matches(pa)));
+            return !intersection.Any();
+        }
+
+        public bool CanBeInDirectSuccessionOf(Inning firstCompare, Inning secondCompare)
+        {
+            var inningIntersections = firstCompare.PlayerAssignments
+                .Intersect(secondCompare.PlayerAssignments)
+                .Intersect(this.PlayerAssignments)
+                .Where(a => a.Position.HasValue)
+                ;
+            
+            return !inningIntersections.Any();
         }
     }
 }

@@ -75,7 +75,71 @@ namespace Tests
         [Test]
         public void CanBeAdjacentTo_FalseWhenPlayerFieldsSamePositionThreeInningsInARow()
         {
-            
+            var assignment = new PlayerAssignment
+            {
+                Player = new Player
+                {
+                    Name = "Billy",
+                    Gender = Gender.Male
+                },
+                Position = Position.Catcher
+            };
+
+            var inning1 = new Inning()
+            {
+                PlayerAssignments = { assignment },
+            };
+            var inning2 = new Inning()
+            {
+                PlayerAssignments = { assignment }
+            };
+            var inning3 = new Inning()
+            {
+                PlayerAssignments = { assignment }
+            };
+
+            var result = inning3.CanBeInDirectSuccessionOf(inning1, inning2);
+            result.ShouldBe(false);
+        }
+
+        [Test]
+        public void CanBeAdjacentTo_TrueWhenPlayerDoesNotFieldSamePositionThreeInningsInARow()
+        {
+            var assignment = new PlayerAssignment
+            {
+                Player = new Player
+                {
+                    Name = "Billy",
+                    Gender = Gender.Male
+                },
+                Position = Position.Catcher
+            };
+
+            var inning1 = new Inning()
+            {
+                PlayerAssignments = { assignment },
+            };
+            var inning2 = new Inning()
+            {
+                PlayerAssignments = { assignment }
+            };
+            var secondAssignment = new PlayerAssignment
+            {
+                Player = new Player
+                {
+                    Name = "Billy",
+                    Gender = Gender.Male
+                },
+                Position = Position.FirstBase
+            };
+
+            var inning3 = new Inning()
+            {
+                PlayerAssignments = { secondAssignment }
+            };
+
+            var result = inning3.CanBeInDirectSuccessionOf(inning1, inning2);
+            result.ShouldBe(true);
         }
     }
 }
