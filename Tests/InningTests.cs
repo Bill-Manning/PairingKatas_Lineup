@@ -22,23 +22,13 @@ namespace Tests
         [Test]
         public void CannotBeAdjacentTo_WhenSamePlayerIsBenched()
         {
-            var assignment = new PlayerAssignment
-            {
-                Player = new Player
-                {
-                    Name = "Billy",
-                    Gender = Gender.Male
-                },
-                Position = null
-            };
-
             var inning1 = new Inning()
             {
-                PlayerAssignments = {assignment},
+                PlayerAssignments = {CreatePlayerAssignmentFor("Billy")},
             };
             var inning2 = new Inning()
             {
-                PlayerAssignments = {assignment}
+                PlayerAssignments = { CreatePlayerAssignmentFor("Billy") }
             };
 
             var result = inning1.CanBeAdjacentTo(inning2);
@@ -75,27 +65,17 @@ namespace Tests
         [Test]
         public void CanBeAdjacentTo_FalseWhenPlayerFieldsSamePositionThreeInningsInARow()
         {
-            var assignment = new PlayerAssignment
-            {
-                Player = new Player
-                {
-                    Name = "Billy",
-                    Gender = Gender.Male
-                },
-                Position = Position.Catcher
-            };
-
             var inning1 = new Inning()
             {
-                PlayerAssignments = { assignment },
+                PlayerAssignments = { CreatePlayerAssignmentFor("Billy") },
             };
             var inning2 = new Inning()
             {
-                PlayerAssignments = { assignment }
+                PlayerAssignments = { CreatePlayerAssignmentFor("Billy") }
             };
             var inning3 = new Inning()
             {
-                PlayerAssignments = { assignment }
+                PlayerAssignments = { CreatePlayerAssignmentFor("Billy") }
             };
 
             var result = inning3.CanBeInDirectSuccessionOf(inning1, inning2);
@@ -105,23 +85,13 @@ namespace Tests
         [Test]
         public void CanBeAdjacentTo_TrueWhenPlayerDoesNotFieldSamePositionThreeInningsInARow()
         {
-            var assignment = new PlayerAssignment
-            {
-                Player = new Player
-                {
-                    Name = "Billy",
-                    Gender = Gender.Male
-                },
-                Position = Position.Catcher
-            };
-
             var inning1 = new Inning()
             {
-                PlayerAssignments = { assignment },
+                PlayerAssignments = { CreatePlayerAssignmentFor("Billy") },
             };
             var inning2 = new Inning()
             {
-                PlayerAssignments = { assignment }
+                PlayerAssignments = { CreatePlayerAssignmentFor("Billy") }
             };
             var secondAssignment = new PlayerAssignment
             {
@@ -140,6 +110,20 @@ namespace Tests
 
             var result = inning3.CanBeInDirectSuccessionOf(inning1, inning2);
             result.ShouldBe(true);
+        }
+
+        private static PlayerAssignment CreatePlayerAssignmentFor(string playerName)
+        {
+            var assignment = new PlayerAssignment
+            {
+                Player = new Player
+                {
+                    Name = playerName,
+                    Gender = Gender.Male
+                },
+                Position = Position.Catcher
+            };
+            return assignment;
         }
     }
 }
