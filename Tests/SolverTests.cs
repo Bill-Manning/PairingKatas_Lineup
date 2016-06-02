@@ -151,17 +151,69 @@ namespace Tests
 
         }
 
-        [Test]
-        public void SolveGameReturnsAGameWithCorrectPlayers()
+        [TestCase(1)]
+        [TestCase(16)]
+        [TestCase(4096)]
+        public void SolveGameReturnsAGameWithCorrectNumberPlayers(int playerCount)
         {
             //Arrange
-            AvailablePlayersList = new List<Player>();
+            AvailablePlayersList = Enumerable.Range(1, playerCount)
+                .Select(a => new Player { Name = $"Player {a}", Gender = (Gender)(a % 2) })
+                .ToList();
+
 
             //Act
             var game = Solver.SolveGame(AvailablePlayersList);
 
             //Assert
-            Assert.That(AvailablePlayersList.Count, Is.EqualTo(game.AvailablePlayers.Count));
+            Assert.That(game.AvailablePlayers.Count, Is.EqualTo(playerCount));
+        }
+
+        [Test]
+        public void SolveGameReturnsAGameWithPlayersFromAvailableInEachInning()
+        {
+            //Arrange
+            AvailablePlayersList = Enumerable.Range(1, 10)
+                .Select(a => new Player { Name = $"Player {a}", Gender = (Gender)(a % 2) })
+                .ToList();
+
+
+            //Act
+            var game = Solver.SolveGame(AvailablePlayersList);
+            
+            //Assert
+            foreach (var inning in game.SolvedInnings)
+            {
+                foreach (var playerAssignment in inning.PlayerAssignments)
+                {
+                    Assert.That(AvailablePlayersList.Contains(playerAssignment.Player));
+                }
+            }
+        }
+
+        [Test]
+        public void SolveGameReturnsInningsThatCanBeAdjacentToOneAnother()
+        {
+
+            //Arrange
+            AvailablePlayersList = Enumerable.Range(1, 12)
+                .Select(a => new Player { Name = $"Player {a}", Gender = (Gender)(a % 2) })
+                .ToList();
+
+            //Act
+            var game = Solver.SolveGame(AvailablePlayersList);
+
+            //Assert
+            for (int i = 0; i < 6; i++)
+            {
+                Assert.That(game.SolvedInnings[i].CanBeAdjacentTo(game.SolvedInnings[i + 1]));
+            }
+        }
+
+        [Test]
+        public void SolveGameReturnsInningsThatDontHaveTheSamePlayersPlayingTheSamePositionThreeInningsInARow()
+        {
+            Assert.Fail();
         }
     }
 }

@@ -13,14 +13,16 @@ namespace Tests
 
         public Game(IEnumerable<Player> players = null)
         {
-            if (players == null)
-            {
-                players = new List<Player>();
-            }
+            
             Opponent = string.Empty;
             Number = 1;
             SolvedInnings = new Inning[7];
             AvailablePlayers = new List<Player>(players);
+
+            for (int i = 0; i < 7; i++)
+            {
+                SolvedInnings[i] = new Inning();
+            }
         }
     }
 }

@@ -37,8 +37,19 @@ namespace Tests
 
         public Game SolveGame(IEnumerable<Player> players)
         {
-            
-            return new Game(players);
+            if (players == null)
+            {
+                players = new List<Player>();
+            }
+            var game = new Game(players);
+            for (int i = 0; i < 7; i++)
+            {
+                players = players.Reverse();
+                var inning = SolveInning(players);
+                game.SolvedInnings[i] = inning;
+            }
+            return game;
+
         }
 
         private bool IsSolvable(IEnumerable<Player> players)
