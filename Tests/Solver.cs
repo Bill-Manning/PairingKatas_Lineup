@@ -35,6 +35,12 @@ namespace Tests
             };
         }
 
+        public Game SolveGame(IEnumerable<Player> players)
+        {
+            
+            return new Game(players);
+        }
+
         private bool IsSolvable(IEnumerable<Player> players)
         {
             if (players == null)

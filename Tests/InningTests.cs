@@ -8,7 +8,7 @@ namespace Tests
     [TestFixture]
     public class InningTests
     {
-        [Test]
+        [Test] 
         public void CanBeAdjacentTo_WhenNoPlayers()
         {
             var inning1 = new Inning();
@@ -24,15 +24,14 @@ namespace Tests
         {
             var inning1 = new Inning()
             {
-                PlayerAssignments = {CreatePlayerAssignmentFor("Billy")},
+                PlayerAssignments = {CreatePlayerAssignmentFor("Billy", null)},
             };
             var inning2 = new Inning()
             {
-                PlayerAssignments = { CreatePlayerAssignmentFor("Billy") }
+                PlayerAssignments = { CreatePlayerAssignmentFor("Billy", null) }
             };
 
             var result = inning1.CanBeAdjacentTo(inning2);
-
             result.ShouldBe(false);
         }
 
@@ -112,7 +111,9 @@ namespace Tests
             result.ShouldBe(true);
         }
 
-        private static PlayerAssignment CreatePlayerAssignmentFor(string playerName)
+        private static PlayerAssignment CreatePlayerAssignmentFor(
+            string playerName, 
+            Position? position = Position.Catcher)
         {
             var assignment = new PlayerAssignment
             {
@@ -121,7 +122,7 @@ namespace Tests
                     Name = playerName,
                     Gender = Gender.Male
                 },
-                Position = Position.Catcher
+                Position = position
             };
             return assignment;
         }

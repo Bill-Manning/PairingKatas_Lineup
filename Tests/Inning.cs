@@ -64,7 +64,7 @@ namespace Tests
         }
 
         public bool CanBeInDirectSuccessionOf(Inning firstCompare, Inning secondCompare)
-        {
+        { 
             var inningIntersections = firstCompare.PlayerAssignments
                 
                 .Intersect(secondCompare.PlayerAssignments, CompareUsingMatches)

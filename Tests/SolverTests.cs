@@ -136,5 +136,32 @@ namespace Tests
 
             Assert.That(inning.Solvable, Is.False);
         }
+
+
+        [Test]
+        public void SolveGameReturnsAGame()
+        {
+
+            // Act
+            var game = Solver.SolveGame(AvailablePlayersList);
+
+            //Assert
+            Assert.That(game, Is.Not.Null);
+            Assert.That(game, Is.InstanceOf<Game>());
+
+        }
+
+        [Test]
+        public void SolveGameReturnsAGameWithCorrectPlayers()
+        {
+            //Arrange
+            AvailablePlayersList = new List<Player>();
+
+            //Act
+            var game = Solver.SolveGame(AvailablePlayersList);
+
+            //Assert
+            Assert.That(AvailablePlayersList.Count, Is.EqualTo(game.AvailablePlayers.Count));
+        }
     }
 }

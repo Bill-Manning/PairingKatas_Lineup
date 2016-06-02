@@ -11,12 +11,16 @@ namespace Tests
         public Inning[] SolvedInnings { get; set; }
         public List<Player> AvailablePlayers { get; }
 
-        public Game()
+        public Game(IEnumerable<Player> players = null)
         {
+            if (players == null)
+            {
+                players = new List<Player>();
+            }
             Opponent = string.Empty;
             Number = 1;
             SolvedInnings = new Inning[7];
-            AvailablePlayers = new List<Player>();
+            AvailablePlayers = new List<Player>(players);
         }
     }
 }
